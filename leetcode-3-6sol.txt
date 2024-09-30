@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int numberOfBoxes;
+    int unitsPerBox;
+} BoxType;
+
+// Comparison function to sort boxes by units per box in descending order
+int compare(const void *a, const void *b) {
+    BoxType *box1 = (BoxType *)a;
+    BoxType *box2 = (BoxType *)b;
+    return box2->unitsPerBox - box1->unitsPerBox; // Descending order
+}
+
+// Function to calculate the maximum units on the truck
+int maximumUnits(BoxType* boxTypes, int boxTypesSize, int truckSize) {
+    // Sort the box types based on units per box
+    qsort(boxTypes, boxTypesSize, sizeof(BoxType), compare);
+
+    int totalUnits = 0;
+
+    for (int i = 0; i < boxTypesSize && truckSize > 0; i++) {
+        // Determine the number of boxes to take
+        int boxesToTake = (truckSize < boxTypes[i].numberOfBoxes) ? truckSize : boxTypes[i].numberOfBoxes;
+
+        // Calculate the total units for the boxes taken
+        totalUnits += boxesToTake * boxTypes[i].unitsPerBox;
+
+        // Decrease the truck's available capacity
+        truckSize -= boxesToTake;
+    }
+
+    return totalUnits;
+}
+
+int main() {
+    BoxType boxTypes[] = {{1, 3}, {2, 2}, {3, 1}}; // {numberOfBoxes, unitsPer

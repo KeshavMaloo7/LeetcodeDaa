@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+bool lemonadeChange(int* bills, int billsSize) {
+    int fiveCount = 0;
+    int tenCount = 0;
+
+    for (int i = 0; i < billsSize; i++) {
+        if (bills[i] == 5) {
+            fiveCount++;
+        } else if (bills[i] == 10) {
+            if (fiveCount > 0) {
+                fiveCount--;
+                tenCount++;
+            } else {
+                return false; // Cannot provide change
+            }
+        } else if (bills[i] == 20) {
+            if (tenCount > 0 && fiveCount > 0) {
+                tenCount--;
+                fiveCount--;
+            } else if (fiveCount >= 3) {
+                fiveCount -= 3;
+            } else {
+                return false; // Cannot provide change
+            }
+        }
+    }
+
+    return true; // Successfully provided change for all customers
+}
+
+int main() {
+    int bills[] = {5, 5, 10, 10, 20};
+    int billsSize = sizeof(bills) / sizeof(bills[0]);
+
+    if (lemonadeChange(bills, billsSize)) {
+        printf("Yes, you can provide change to all customers.\n");
+    } else {
+        printf("No, you cannot provide change to

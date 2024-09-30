@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <limits.h>
+
+int minCoins(int coins[], int numCoins, int amount) {
+    // Create a DP array to store the minimum coins for each amount
+    int dp[amount + 1];
+    
+    // Initialize the dp array
+    dp[0] = 0; // 0 coins needed to make amount 0
+    for (int i = 1; i <= amount; i++) {
+        dp[i] = INT_MAX; // Set initial value to infinity
+    }
+
+    // Fill the DP array
+    for (int i = 0; i < numCoins; i++) {
+        for (int j = coins[i]; j <= amount; j++) {
+            if (dp[j - coins[i]] != INT_MAX) {
+                dp[j] = (dp[j] < dp[j - coins[i]] + 1) ? dp[j] : (dp[j - coins[i]] + 1);
+            }
+        }
+    }
+
+    // Return the result
+    return dp[amount] == INT_MAX ? -1 : dp[amount];
+}
+
+int main() {
+    int coins[] = {1, 2, 5}; // Coin denominations
+    int amount = 11;         // Total amount
+    int numCoins = sizeof(coins) / sizeof(coins[0]);
+
+    int result = minCoins(coins, numCoins, amount);
+    if (result != -1) {
+        printf("Minimum number of coins required: %d\n", result);
+    } else {
+        printf("Cannot make the amount with the given coins.\n");
+    }
+
+    return 0;
+}

@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Item {
+    int value;
+    int weight;
+    float ratio; // value-to-weight ratio
+} Item;
+
+// Comparison function for sorting items by their value-to-weight ratio
+int compare(const void* a, const void* b) {
+    Item* item1 = (Item*)a;
+    Item* item2 = (Item*)b;
+    return (item2->ratio - item1->ratio > 0) ? 1 : -1; // Sort in descending order
+}
+
+// Function to solve the Fractional Knapsack problem
+float fractionalKnapsack(int W, Item arr[], int n) {
+    // Sort items by value-to-weight ratio
+    qsort(arr, n, sizeof(arr[0]), compare);
+    
+    float totalValue = 0.0;
+    
+    for (int i = 0; i < n; i++) {
+        if (arr[i].weight <= W) {
+            // Take the whole

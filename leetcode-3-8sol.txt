@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int start;
+    int end;
+} Interval;
+
+// Comparison function for sorting intervals by their start time
+int compare(const void *a, const void *b) {
+    Interval *interval1 = (Interval *)a;
+    Interval *interval2 = (Interval *)b;
+    return interval1->start - interval2->start;
+}
+
+// Function to merge intervals
+Interval* mergeIntervals(Interval* intervals, int intervalsSize, int* returnSize) {
+    if (intervalsSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+
+    // Sort intervals based on the start time
+    qsort(intervals, intervalsSize, sizeof(Interv
